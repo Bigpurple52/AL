@@ -7,17 +7,26 @@ import gameframework.base.Overlappable;
 import gameframework.game.GameEntity;
 
 public class TeleportPairOfPoints implements GameEntity, Overlappable{
+	public static final int RENDERING_SIZE = 16;
 
-	@Override
-	public Rectangle getBoundingBox() {
-		// TODO Auto-generated method stub
-		return null;
+	protected Point position;
+	protected Point destination;
+
+	public TeleportPairOfPoints(Point pos, Point destination) {
+		position = pos;
+		this.destination = destination;
 	}
 
-	@Override
+	public Point getDestination() {
+		return destination;
+	}
+
 	public Point getPosition() {
-		// TODO Auto-generated method stub
-		return null;
+		return position;
 	}
 
+	public Rectangle getBoundingBox() {
+		return (new Rectangle((int) position.getX(), (int) position.getY(),
+				RENDERING_SIZE, RENDERING_SIZE));
+	}
 }
