@@ -8,30 +8,30 @@ public class SnakeHead extends Snake{
 	
 	public SnakeHead(Canvas defaultCanvas) {
 		super(defaultCanvas);
-		spriteManager.setTypes("head-right","head-down", "head-left", "head-top");
 	}
 
 	@Override
 	public void draw(Graphics g) {
-		String spriteType = "";
+		String spriteType = "head-";
 		Point tmp = getSpeedVector().getDirection();
 		movable = true;
-		String tmpMove = "";
+		String tmpMove = "";	
 		
+		//Watch which direction the head is going
 		if (tmp.getX() == 1) {
-			spriteType += "head-right";
+			spriteType += "right";
 			tmpMove = "right";
 		} else if (tmp.getX() == -1) {
-			spriteType += "head-left";
+			spriteType += "left";
 			tmpMove = "left";
 		} else if (tmp.getY() == 1) {
-			spriteType += "head-down";
+			spriteType += "down";
 			tmpMove = "down";
 		} else if (tmp.getY() == -1) {
-			spriteType += "head-top";
+			spriteType += "top";
 			tmpMove = "top";
 		} else {
-			spriteType = "static";
+			spriteType = "head-left";
 			spriteManager.reset();
 			movable = false;
 		}
@@ -40,6 +40,10 @@ public class SnakeHead extends Snake{
 		currentMove = tmpMove;
 		spriteManager.setType(spriteType);
 		spriteManager.draw(g, getPosition());
-		
+	}
+	
+	@Override
+	public void oneStepMoveAddedBehavior() {
+		//Nothing happened
 	}
 }

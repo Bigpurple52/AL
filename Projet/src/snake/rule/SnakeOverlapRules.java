@@ -3,15 +3,14 @@ package snake.rule;
 import java.awt.Point;
 import java.util.Vector;
 
-import gameframework.base.MoveStrategyRandom;
-import gameframework.base.MoveStrategyStraightLine;
 import gameframework.base.ObservableValue;
 import gameframework.base.Overlap;
-import gameframework.game.GameMovableDriverDefaultImpl;
 import gameframework.game.GameUniverse;
 import gameframework.game.OverlapRulesApplierDefaultImpl;
 import snake.entity.Fruit;
-import snake.entity.Snake;
+import snake.entity.SnakeBody;
+import snake.entity.SnakeHead;
+import snake.entity.SnakeTail;
 import snake.entity.TeleportPairOfPoints;
 
 public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
@@ -20,15 +19,14 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	protected Vector<Fruit> vFruits = new Vector<Fruit>();
 
 	protected Point snakeStartPos;
-	protected boolean manageSnakeDeath;
 	private final ObservableValue<Integer> score;
-	private final ObservableValue<Boolean> endOfGame;
+	private final ObservableValue<Integer> life;
 
 	public SnakeOverlapRules(Point snakePos, ObservableValue<Integer> score,
-			ObservableValue<Boolean> endOfGame) {
+			ObservableValue<Integer> life) {
 		this.snakeStartPos = (Point) snakePos.clone();
 		this.score = score;
-		this.endOfGame = endOfGame;
+		this.life = life;
 	}
 
 	public void setUniverse(GameUniverse universe) {
@@ -42,33 +40,37 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 
 	@Override
 	public void applyOverlapRules(Vector<Overlap> overlappables) {
-		manageSnakeDeath = true;
 		super.applyOverlapRules(overlappables);
 	}
 
-	public void overlapRule(Snake s, Fruit f) {
+	public void overlapRule(SnakeHead sh, Fruit f) {
+		//Condition to know which fruit the snake is eating
 		if(f.getName() == "toxic"){
-			if (manageSnakeDeath) {
-				s.setPosition(snakeStartPos);
-				manageSnakeDeath = false;
-				endOfGame.setValue(true);
-			}
+			life.setValue(life.getValue() - 1);
 		}else{
 			score.setValue(score.getValue() + f.getValue());
 			universe.removeGameEntity(f);
 		}
 	}
 
-	public void overlapRule(Snake s1, Snake s2) {
-		if (manageSnakeDeath) {
-			s1.setPosition(snakeStartPos);
-			manageSnakeDeath = false;
-			endOfGame.setValue(true);
-		}
+	public void overlapRule(SnakeHead sh, SnakeBody sb) {
+		life.setValue(life.getValue() - 1);
 	}
 
-	public void overlapRule(Snake s, TeleportPairOfPoints teleport) {
-		s.setPosition(teleport.getDestination());
+	public void overlapRule(SnakeHead sh, SnakeTail sb) {
+		life.setValue(life.getValue() - 1);
+	}
+	
+	public void overlapRule(SnakeHead sh, TeleportPairOfPoints teleport) {
+		sh.setPosition(teleport.getDestination());
+	}
+	
+	public void overlapRule(SnakeBody sb, TeleportPairOfPoints teleport) {
+		sb.setPosition(teleport.getDestination());
+	}
+	
+	public void overlapRule(SnakeTail st, TeleportPairOfPoints teleport) {
+		st.setPosition(teleport.getDestination());
 	}
 
 }

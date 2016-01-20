@@ -21,19 +21,31 @@ public abstract class Snake extends GameMovable implements Drawable, GameEntity,
 	protected String currentMove = "";
 
 	public Snake(Canvas defaultCanvas) {
-		this.spriteManager = new SpriteManagerDefaultImpl("image/snake.gif",
-				defaultCanvas, RENDERING_SIZE, 6);
+		this.spriteManager = new SpriteManagerDefaultImpl("images/snake.gif",
+				defaultCanvas, RENDERING_SIZE, 1);
+		spriteManager.setTypes("head-right","head-down", "head-left", "head-top", "horizontal", "vertical",
+				"turn-top-right", "turn-top-left", "turn-down-left", "turn-down-right", "tail-down","tail-left", "tail-top", "tail-right");
+	}
+
+	public String getLastMove() {
+		return lastMove;
+	}
+	
+	public void setLastMove(String lastMove) {
+		this.lastMove = lastMove;
+	}
+
+	public String getCurrentMove() {
+		return currentMove;
+	}
+
+	public void setCurrentMove(String currentMove) {
+		this.currentMove = currentMove;
 	}
 
 	@Override
 	public Rectangle getBoundingBox() {
 		return (new Rectangle(0, 0, RENDERING_SIZE, RENDERING_SIZE));
 	}
-
-	@Override
-	public void oneStepMoveAddedBehavior() {
-		if (movable) {
-			spriteManager.increment();
-		}
-	}
+	
 }

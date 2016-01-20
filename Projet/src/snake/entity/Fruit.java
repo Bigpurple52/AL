@@ -6,19 +6,22 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import gameframework.base.Drawable;
-import gameframework.base.DrawableImage;
 import gameframework.base.Overlappable;
 import gameframework.game.GameEntity;
+import gameframework.game.SpriteManager;
+import gameframework.game.SpriteManagerDefaultImpl;
 
 public class Fruit implements Drawable, GameEntity, Overlappable{
-	protected static DrawableImage image = null;
+	protected final SpriteManager spriteManager;
+	public static final int RENDERING_SIZE = 16;
 	protected Point position;
 	protected int value;
 	protected String name;
-	public static final int RENDERING_SIZE = 16;
 
 	public Fruit(Canvas defaultCanvas, Point pos, int value, String name) {
-		this.image = new DrawableImage("image/fruits.gif", defaultCanvas);
+		this.spriteManager = new SpriteManagerDefaultImpl("images/fruits.gif",
+				defaultCanvas, RENDERING_SIZE, 1);
+		spriteManager.setTypes("strawberry", "blackberry", "perry", "cherry", "toxic");
 		this.position = pos;
 		this.value = value;
 		this.name = name;
@@ -37,9 +40,10 @@ public class Fruit implements Drawable, GameEntity, Overlappable{
 	}
 
 	public void draw(Graphics g) {
-		g.drawImage(image.getImage(), (int) getPosition().getX(),
-				(int) getPosition().getY(), RENDERING_SIZE, RENDERING_SIZE,
-				null);
+		String spriteType = getName();
+
+		spriteManager.setType(spriteType);
+		spriteManager.draw(g, getPosition());
 
 	}
 
