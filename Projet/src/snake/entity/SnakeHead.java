@@ -31,8 +31,8 @@ public class SnakeHead extends Snake{
 			spriteType += "top";
 			tmpMove = "top";
 		} else {
-			spriteType = "head-left";
-			spriteManager.reset();
+			spriteType += "left";
+			tmpMove = "left";
 			movable = false;
 		}
 		

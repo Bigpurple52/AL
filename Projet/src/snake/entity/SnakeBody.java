@@ -77,7 +77,7 @@ public class SnakeBody extends Snake{
 			break;
 		default:
 			spriteType = "horizontal";
-			spriteManager.reset();
+			tmpMove = "left";
 			movable = false;
 		}
 
@@ -93,7 +93,7 @@ public class SnakeBody extends Snake{
 		if(this.partAttach.movable){
 			Point goal = null;
 			//Watch where his attach part is going
-			switch (this.partAttach.getCurrentMove()){
+			switch (this.partAttach.getLastMove()){
 			case "top":
 				goal = new Point((int)this.getPosition().getX(), (int)this.getPosition().getY()-1);
 				break;

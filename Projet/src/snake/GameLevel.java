@@ -1,7 +1,10 @@
 package snake;
 
+import java.awt.AWTException;
 import java.awt.Canvas;
 import java.awt.Point;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 
 import gameframework.base.MoveStrategyKeyboard;
 import gameframework.game.CanvasDefaultImpl;
@@ -97,7 +100,15 @@ public class GameLevel extends GameLevelDefaultImpl{
 		snakeT.setDriver(snakeDriver);
 		snakeT.setPosition(new Point(16 * SPRITE_SIZE, 17 * SPRITE_SIZE));
 		universe.addGameEntity(snakeT);
-
+		
+		// Perform a up key press to move the snake automatically at the beginning
+		try {
+			Robot robot = new Robot();
+			robot.keyPress(KeyEvent.VK_LEFT);
+			robot.keyRelease(KeyEvent.VK_LEFT);
+		} catch (AWTException e) {
+			e.printStackTrace();
+		}
 	}
 }
 	

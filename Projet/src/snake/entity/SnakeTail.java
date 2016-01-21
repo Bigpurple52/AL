@@ -38,7 +38,6 @@ public class SnakeTail extends Snake{
 			break;
 		default:
 			spriteType += "left";
-			spriteManager.reset();
 		}
 
 		spriteManager.setType(spriteType);
@@ -51,7 +50,7 @@ public class SnakeTail extends Snake{
 		if(this.partAttach.movable){
 			Point goal = null;
 			//Watch where his attach part is going
-			switch (this.partAttach.getCurrentMove()){
+			switch (this.partAttach.getLastMove()){
 			case "top":
 				goal = new Point((int)this.getPosition().getX(), (int)this.getPosition().getY()-1);
 				break;
