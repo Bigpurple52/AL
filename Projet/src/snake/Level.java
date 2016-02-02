@@ -5,6 +5,7 @@ import java.awt.Canvas;
 import java.awt.Point;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 import gameframework.base.MoveStrategyKeyboard;
 import gameframework.game.CanvasDefaultImpl;
@@ -28,6 +29,8 @@ import snake.rule.SnakeOverlapRules;
 public class Level extends GameLevelDefaultImplSnake{
 
 	Canvas canvas;
+	
+	ArrayList<Snake> snakeall;
 
 	static int [][] tab;
 
@@ -43,9 +46,10 @@ public class Level extends GameLevelDefaultImplSnake{
 
 		OverlapProcessor overlapProcessor = new OverlapProcessorDefaultImpl();
 		MoveBlockerChecker moveBlockerChecker = new MoveBlockerCheckerDefaultImpl();
+		snakeall = new ArrayList<Snake>();
 
 		SnakeOverlapRules overlapRules = new SnakeOverlapRules(new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE),
-				score[0], life[0]);
+				score[0], life[0], canvas, snakeall);
 		overlapProcessor.setOverlapRules(overlapRules);
 
 		universe = new GameUniverseDefaultImpl(moveBlockerChecker, overlapProcessor);
@@ -80,8 +84,11 @@ public class Level extends GameLevelDefaultImplSnake{
 		
 		// Snake definition and inclusion in the universe
 		Snake snakeH = new SnakeHead(canvas);
+		snakeall.add(snakeH);
 		Snake snakeB = new SnakeBody(canvas, snakeH);
+		snakeall.add(snakeB);
 		Snake snakeT = new SnakeTail(canvas, snakeB);
+		snakeall.add(snakeT);
 		GameMovableDriverDefaultImpl snakeDriver = new GameMovableDriverDefaultImpl();
 		MoveStrategyKeyboard keyStr = new MoveStrategyKeyboard();
 		snakeDriver.setStrategy(keyStr);
