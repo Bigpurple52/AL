@@ -23,7 +23,7 @@ public class SnakeTail extends Snake{
 		String spriteType = "tail-";
 
 		//Watch where his attach part is going
-		switch(this.partAttach.getCurrentMove()){
+		switch(this.partAttach.getLastMove()){
 		case "right": 
 			spriteType += "right";
 			break;
