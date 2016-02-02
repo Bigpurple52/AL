@@ -9,7 +9,7 @@ public class Main {
 		GameDefaultImplSnake g = new GameDefaultImplSnake();
 		ArrayList<GameLevel> levels = new ArrayList<GameLevel>();
 
-		levels.add(new snake.GameLevel(g));
+		levels.add(new snake.Level(g));
 		
 		g.setLevels(levels);
 		g.start();

@@ -25,7 +25,7 @@ import snake.entity.SnakeTail;
 import snake.entity.TeleportPairOfPoints;
 import snake.rule.SnakeOverlapRules;
 
-public class GameLevel extends GameLevelDefaultImpl{
+public class Level extends GameLevelDefaultImpl{
 
 	Canvas canvas;
 
@@ -33,7 +33,7 @@ public class GameLevel extends GameLevelDefaultImpl{
 
 	public static final int SPRITE_SIZE = 16;
 
-	public GameLevel(Game g) {
+	public Level(Game g) {
 		super(g);
 		canvas = g.getCanvas();
 	}
