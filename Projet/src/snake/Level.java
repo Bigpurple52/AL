@@ -25,7 +25,7 @@ import snake.entity.SnakeTail;
 import snake.entity.TeleportPairOfPoints;
 import snake.rule.SnakeOverlapRules;
 
-public class Level extends GameLevelDefaultImpl{
+public class Level extends GameLevelDefaultImplSnake{
 
 	Canvas canvas;
 
@@ -78,11 +78,6 @@ public class Level extends GameLevelDefaultImpl{
 			}
 		}
 		
-		Fruit fruit = new Fruit (canvas, new Point(14 * SPRITE_SIZE, 25 * SPRITE_SIZE), 1, "strawberry");
-		universe.addGameEntity(fruit);
-		Fruit fruit1 = new Fruit (canvas, new Point(10 * SPRITE_SIZE, 25 * SPRITE_SIZE), 1, "toxic");
-		universe.addGameEntity(fruit1);
-
 		// Snake definition and inclusion in the universe
 		Snake snakeH = new SnakeHead(canvas);
 		Snake snakeB = new SnakeBody(canvas, snakeH);

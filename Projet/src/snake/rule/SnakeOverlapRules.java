@@ -47,6 +47,7 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		//Condition to know which fruit the snake is eating
 		if(f.getName() == "toxic"){
 			life.setValue(life.getValue() - 1);
+			universe.removeGameEntity(f);
 		}else{
 			score.setValue(score.getValue() + f.getValue());
 			universe.removeGameEntity(f);

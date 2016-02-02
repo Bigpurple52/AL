@@ -3,7 +3,6 @@ package snake;
 import gameframework.base.ObservableValue;
 import gameframework.game.CanvasDefaultImpl;
 import gameframework.game.Game;
-import gameframework.game.GameLevelDefaultImpl;
 import gameframework.game.GameLevel;
 
 import java.awt.BorderLayout;
@@ -44,7 +43,7 @@ public class GameDefaultImplSnake implements Game, Observer {
 
 	private Frame f;
 
-	private GameLevelDefaultImpl currentPlayedLevel = null;
+	private GameLevelDefaultImplSnake currentPlayedLevel = null;
 	protected int levelNumber;
 	protected ArrayList<GameLevel> gameLevels;
 
@@ -182,7 +181,7 @@ public class GameDefaultImplSnake implements Game, Observer {
 					currentPlayedLevel.interrupt();
 					currentPlayedLevel = null;
 				}
-				currentPlayedLevel = (GameLevelDefaultImpl) level;
+				currentPlayedLevel = (GameLevelDefaultImplSnake) level;
 				levelNumber++;
 				currentLevelValue.setText(Integer.toString(levelNumber));
 				currentPlayedLevel.start();
