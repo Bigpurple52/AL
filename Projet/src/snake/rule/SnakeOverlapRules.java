@@ -6,8 +6,10 @@ import java.util.Vector;
 import java.awt.Canvas;
 
 import gameframework.base.MoveStrategyKeyboard;
+import gameframework.base.MoveStrategyStraightLine;
 import gameframework.base.ObservableValue;
 import gameframework.base.Overlap;
+import gameframework.base.SpeedVectorDefaultImpl;
 import gameframework.game.GameMovableDriverDefaultImpl;
 import gameframework.game.GameUniverse;
 import gameframework.game.OverlapRulesApplierDefaultImpl;
@@ -38,6 +40,10 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		this.snake = snake;
 	}
 
+	public ArrayList<Snake> getSnake() {
+		return snake;
+	}
+	
 	public void setUniverse(GameUniverse universe) {
 		this.universe = universe;
 	}
@@ -48,38 +54,45 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	}
 
 	public void overlapRule(SnakeHead sh, Fruit f) throws InterruptedException {
-		//Condition to know which fruit the snake is eating
-		Point goal;
 		if(f.getName() == "toxic"){
 			life.setValue(life.getValue() - 1);
 			universe.removeGameEntity(f);
 		}else{
 			score.setValue(score.getValue() + f.getValue());
-			//Fruit fruit3 = new Fruit (canvas, new Point(6 * SPRITE_SIZE, 14 * SPRITE_SIZE), 1, "toxic");
-			//universe.addGameEntity(fruit3);
-			//universe.removeGameEntity((Snake)snake.get(2));
-			goal = snake.get(2).getPosition();
-			universe.removeGameEntity(snake.get(2));
-			snake.remove(2);
+			universe.removeGameEntity(f);
+
+			//Copy of data which its needed
+			Snake tail = snake.get(snake.size()-1);
+			Snake body = snake.get(snake.size()-2);
+			
+			//Remove tail into the game and in the array
+			universe.removeGameEntity(tail);
+			snake.remove(tail);
+			
+			//Set up driver and strategy
 			GameMovableDriverDefaultImpl snakeDriver = new GameMovableDriverDefaultImpl();
 			MoveStrategyKeyboard keyStr = new MoveStrategyKeyboard();
 			snakeDriver.setStrategy(keyStr);
 			
-			Snake snakeB = new SnakeBody(canvas, snake.get(1));
+			//Create a new body part
+			Snake snakeB = new SnakeBody(canvas, body);
 			snakeB.setDriver(snakeDriver);
-			snakeB.setPosition(new Point((int)goal.getX(),(int)goal.getY()+10));
-			snakeB.setLastMove(snake.get(1).getLastMove());
-			snakeB.setCurrentMove(snake.get(1).getCurrentMove());
-			snake.add(snakeB);
-			universe.addGameEntity(snakeB);
-			/*Snake snakeT = new SnakeTail(canvas, snake.get(2));
+			snakeB.setPosition(newPoint(body, 3));
+			snakeB.setLastMove(body.getLastMove());
+			snakeB.setCurrentMove(body.getCurrentMove());
+			
+			//Create a new tail
+			Snake snakeT = new SnakeTail(canvas, snakeB);
 			snakeT.setDriver(snakeDriver);
-			//snakeT.setPosition(new Point((int)snake.get(1).getPosition().getX()-1,(int)snake.get(1).getPosition().getY()));
-			snakeT.setPosition(newPoint(snake.get(2)));
-			//snakeT.setSpeedVector(snake.get(2).getSpeedVector());
-			universe.addGameEntity(snakeT);
-			snake.add(snakeT);*/
-			universe.removeGameEntity(f);
+			snakeT.setPosition(newPoint(snakeB, 1));
+			snakeT.setLastMove(snakeB.getLastMove());
+			snakeT.setCurrentMove(snakeB.getCurrentMove());
+	
+			//Add body part and tail into the game and in the array
+			universe.addGameEntity(snakeB);
+			universe.addGameEntity(snakeT);		
+			snake.add(snakeB);
+			snake.add(snakeT);
 		}
 	}
 
@@ -103,20 +116,20 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		st.setPosition(teleport.getDestination());
 	}
 	
-	public Point newPoint(Snake snake){
-		Point goal;
+	public Point newPoint(Snake snake, int delay){
+		Point goal = null;
 		switch (snake.getLastMove()){
 		case "top":
-			goal = new Point((int)snake.getPosition().getX()+2, (int)snake.getPosition().getY());
+			goal = new Point((int)snake.getPosition().getX(), (int)snake.getPosition().getY()+SPRITE_SIZE/delay);
 			break;
 		case "down":
-			goal = new Point((int)snake.getPosition().getX()-2, (int)snake.getPosition().getY());
+			goal = new Point((int)snake.getPosition().getX(), (int)snake.getPosition().getY()-SPRITE_SIZE/delay);
 			break;
 		case "right":
-			goal = new Point((int)snake.getPosition().getX(), (int)snake.getPosition().getY()-2);
+			goal = new Point((int)snake.getPosition().getX()-SPRITE_SIZE/delay, (int)snake.getPosition().getY());
 			break;
 		case "left":
-			goal = new Point((int)snake.getPosition().getX(), (int)snake.getPosition().getY()+2);
+			goal = new Point((int)snake.getPosition().getX()+SPRITE_SIZE/delay, (int)snake.getPosition().getY());
 			break;
 		default:
 			goal = null;
@@ -124,5 +137,4 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		}
 		return goal;
 	}
-
 }

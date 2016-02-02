@@ -62,6 +62,8 @@ public abstract class GameLevelDefaultImplSnake extends Thread implements GameLe
 		
 		// main game loop 
 		long start;
+		
+		// Pop fruits randomly and delete them every 5 sec
 		final Runnable pop = new Runnable() { 
 		        @Override
 		        public void run() {
@@ -82,8 +84,8 @@ public abstract class GameLevelDefaultImplSnake extends Thread implements GameLe
 		    }
 		};
 		
-		
-		    executor.scheduleWithFixedDelay(pop, 2, 5, TimeUnit.SECONDS);
+		//Execute the pop function every 5sec with 2 sec delay
+		executor.scheduleWithFixedDelay(pop, 2, 5, TimeUnit.SECONDS);
 		    
 		while (!stopGameLoop && !this.isInterrupted()) {
 			start = new Date().getTime();

@@ -21,25 +21,35 @@ public class SnakeTail extends Snake{
 	@Override
 	public void draw(Graphics g) {
 		String spriteType = "tail-";
+		String tmpMove = "left";
+		movable = true;
 
 		//Watch where his attach part is going
 		switch(this.partAttach.getLastMove()){
 		case "right": 
 			spriteType += "right";
+			tmpMove = "right";
 			break;
 		case "down":
 			spriteType += "down";
+			tmpMove = "down";
 			break;
 		case "left": 
 			spriteType += "left";
+			tmpMove = "left";
 			break;
 		case "top":
 			spriteType += "top";
+			tmpMove = "top";
 			break;
 		default:
 			spriteType += "left";
+			tmpMove = "left";
+			movable = false;
 		}
-
+		
+		lastMove = currentMove;
+		currentMove = tmpMove;
 		spriteManager.setType(spriteType);
 		spriteManager.draw(g, getPosition());
 	}
