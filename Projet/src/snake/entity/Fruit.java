@@ -19,7 +19,7 @@ public class Fruit implements Drawable, GameEntity, Overlappable{
 	protected String name;
 
 	public Fruit(Canvas defaultCanvas, Point pos, int value, String name) {
-		this.spriteManager = new SpriteManagerDefaultImpl("images/fruits.gif",
+		this.spriteManager = new SpriteManagerDefaultImpl("Projet/images/fruits.gif",
 				defaultCanvas, RENDERING_SIZE, 1);
 		spriteManager.setTypes("strawberry", "blackberry", "perry", "cherry", "toxic");
 		this.position = pos;

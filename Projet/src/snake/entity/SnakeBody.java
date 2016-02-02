@@ -22,7 +22,7 @@ public class SnakeBody extends Snake{
 	@Override
 	public void draw(Graphics g) {
 		String spriteType = "";
-		String tmpMove = "";
+		String tmpMove = "left";
 		movable = true;
 		
 		//Watch where his attach part is going
@@ -81,7 +81,6 @@ public class SnakeBody extends Snake{
 			movable = false;
 		}
 
-		lastlastMove = lastMove;
 		lastMove = currentMove;
 		currentMove = tmpMove;
 		spriteManager.setType(spriteType);
@@ -111,37 +110,7 @@ public class SnakeBody extends Snake{
 				goal = null;
 				break;
 			}
-/*
-			switch(this.partAttach.getLastMove()+this.partAttach.getCurrentMove()){
-			case "righttop": 
-				goal = new Point((int)this.getPosition().getX()+1, (int)this.getPosition().getY());
-				break;
-			case "downleft":
-				goal = new Point((int)this.getPosition().getX(), (int)this.getPosition().getY()+1);
-				break;
-			case "lefttop": 
-				goal = new Point((int)this.getPosition().getX()-1, (int)this.getPosition().getY());
-				break;
-			case "downright":
-				goal = new Point((int)this.getPosition().getX(), (int)this.getPosition().getY()+1);
-				break;
-			case "rightdown": 
-				goal = new Point((int)this.getPosition().getX()+1, (int)this.getPosition().getY());
-				break;
-			case "topleft":
-				goal = new Point((int)this.getPosition().getX(), (int)this.getPosition().getY()-1);
-				break;
-			case "leftdown": 
-				goal = new Point((int)this.getPosition().getX()-1, (int)this.getPosition().getY());
-				break;
-			case "topright":
-				goal = new Point((int)this.getPosition().getX(), (int)this.getPosition().getY()-1);
-				break;
-			default:
-				goal = null;
-				break;
-			}
-*/
+			
 			//Allows to move to his current position to his attach part
 			this.strat = new MoveStrategyStraightLine(this.getPosition(), goal);
 			snakeDriver = new GameMovableDriverDefaultImpl();
