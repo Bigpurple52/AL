@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 public class SnakeHead extends Snake{
-	
+
 	public SnakeHead(Canvas defaultCanvas) {
 		super(defaultCanvas);
 	}
@@ -16,7 +16,7 @@ public class SnakeHead extends Snake{
 		Point tmp = getSpeedVector().getDirection();
 		movable = true;
 		String tmpMove = "";	
-		
+
 		//Watch which direction the head is going
 		if (tmp.getX() == 1) {
 			spriteType += "right";
@@ -32,16 +32,16 @@ public class SnakeHead extends Snake{
 			tmpMove = "top";
 		} else {
 			spriteType += "left";
-			tmpMove = "left";
+			tmpMove = "";
 			movable = false;
 		}
-		
+
 		lastMove = currentMove;
 		currentMove = tmpMove;
 		spriteManager.setType(spriteType);
 		spriteManager.draw(g, getPosition());
 	}
-	
+
 	@Override
 	public void oneStepMoveAddedBehavior() {
 		//Nothing happened

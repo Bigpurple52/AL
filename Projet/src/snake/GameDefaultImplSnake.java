@@ -31,7 +31,7 @@ public class GameDefaultImplSnake implements Game, Observer {
 	protected static final int NB_ROWS = 31;
 	protected static final int NB_COLUMNS = 28;
 	protected static final int SPRITE_SIZE = 16;
-	public static final int MAX_NUMBER_OF_PLAYER = 4;
+	public static final int MAX_NUMBER_OF_PLAYER = 1;
 	public static final int NUMBER_OF_LIVES = 1;
 
 	protected CanvasDefaultImpl defaultCanvas = null;
@@ -202,12 +202,10 @@ public class GameDefaultImplSnake implements Game, Observer {
 
 	public void pause() {
 		System.out.println("pause(): Unimplemented operation");
-		// currentPlayedLevel.suspend();
 	}
 
 	public void resume() {
 		System.out.println("resume(): Unimplemented operation");
-		// currentPlayedLevel.resume();
 	}
 
 	public ObservableValue<Integer>[] score() {
@@ -248,9 +246,9 @@ public class GameDefaultImplSnake implements Game, Observer {
 			for (ObservableValue<Integer> scoreObservable : score) {
 				if (o == scoreObservable) {
 					scoreValue
-							.setText(Integer
-									.toString(((ObservableValue<Integer>) o)
-											.getValue()));
+					.setText(Integer
+							.toString(((ObservableValue<Integer>) o)
+									.getValue()));
 				}
 			}
 		}

@@ -19,10 +19,10 @@ import snake.entity.Fruit;
 public abstract class GameLevelDefaultImplSnake extends Thread implements GameLevel {
 	private static final int MINIMUM_DELAY_BETWEEN_GAME_CYCLES = 100;
 	public static final int SPRITE_SIZE = 16;
-	
+
 	private static final String fruits[] = {"strawberry", "blackberry", "perry", "cherry", "toxic"};
 	private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-	
+
 	protected final Game g;
 	protected GameUniverse universe;
 	protected GameUniverseViewPort gameBoard;
@@ -59,34 +59,34 @@ public abstract class GameLevelDefaultImplSnake extends Thread implements GameLe
 	@Override
 	public void run() {
 		stopGameLoop = false;
-		
+
 		// main game loop 
 		long start;
-		
+
 		// Pop fruits randomly and delete them every 5 sec
 		final Runnable pop = new Runnable() { 
-		        @Override
-		        public void run() {
-		        	int x = (int)((Math.random()*25)+1);
-				    int y = (int)((Math.random()*28)+1);
-				    int f = (int)(Math.random()*5);
-			    	Fruit fruit = new Fruit (canvas, new Point(x * SPRITE_SIZE, y * SPRITE_SIZE), 1, fruits[f]);
-			    	universe.addGameEntity(fruit);
-			    	canvas.repaint();  
-			    	Timer t = new Timer();
-					t.schedule(new TimerTask() {
-					    @Override
-					    public void run() {
-					    	universe.removeGameEntity(fruit);
-					    	canvas.repaint(); 
-					    }
-					}, 5000, 5000);
-		    }
+			@Override
+			public void run() {
+				int x = (int)((Math.random()*25)+1);
+				int y = (int)((Math.random()*28)+1);
+				int f = (int)(Math.random()*5);
+				Fruit fruit = new Fruit (canvas, new Point(x * SPRITE_SIZE, y * SPRITE_SIZE), 1, fruits[f]);
+				universe.addGameEntity(fruit);
+				canvas.repaint();  
+				Timer t = new Timer();
+				t.schedule(new TimerTask() {
+					@Override
+					public void run() {
+						universe.removeGameEntity(fruit);
+						canvas.repaint(); 
+					}
+				}, 5500);
+			}
 		};
-		
+
 		//Execute the pop function every 5sec with 2 sec delay
 		executor.scheduleWithFixedDelay(pop, 2, 5, TimeUnit.SECONDS);
-		    
+
 		while (!stopGameLoop && !this.isInterrupted()) {
 			start = new Date().getTime();
 			gameBoard.paint();

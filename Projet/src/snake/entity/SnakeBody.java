@@ -4,14 +4,12 @@ import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.Point;
 
-import gameframework.base.MoveStrategyKeyboard;
 import gameframework.base.MoveStrategyStraightLine;
 import gameframework.game.GameMovableDriverDefaultImpl;
 
 public class SnakeBody extends Snake{
 
 	protected Snake partAttach;
-	MoveStrategyStraightLine strat;
 	GameMovableDriverDefaultImpl snakeDriver;
 
 	public SnakeBody(Canvas defaultCanvas, Snake partAttach) {
@@ -24,7 +22,7 @@ public class SnakeBody extends Snake{
 		String spriteType = "";
 		String tmpMove = "left";
 		movable = true;
-		
+
 		//Watch where his attach part is going
 		switch(this.partAttach.getLastMove()+this.partAttach.getCurrentMove()){
 		case "righttop": 
@@ -77,7 +75,7 @@ public class SnakeBody extends Snake{
 			break;
 		default:
 			spriteType = "horizontal";
-			tmpMove = "left";
+			tmpMove = "";
 			movable = false;
 		}
 
@@ -95,26 +93,25 @@ public class SnakeBody extends Snake{
 			//Watch where his attach part is going
 			switch (this.partAttach.getCurrentMove()){
 			case "top":
-				goal = new Point((int)this.getPosition().getX(), (int)this.getPosition().getY()-1);
+				goal = new Point((int)Math.round(this.getPosition().getX()), (int)Math.round(this.getPosition().getY())-1);
 				break;
 			case "down":
-				goal = new Point((int)this.getPosition().getX(), (int)this.getPosition().getY()+1);
+				goal = new Point((int)Math.round(this.getPosition().getX()), (int)Math.round(this.getPosition().getY())+1);
 				break;
 			case "right":
-				goal = new Point((int)this.getPosition().getX()+1, (int)this.getPosition().getY());
+				goal = new Point((int)Math.round(this.getPosition().getX())+1, (int)Math.round(this.getPosition().getY()));
 				break;
 			case "left":
-				goal = new Point((int)this.getPosition().getX()-1, (int)this.getPosition().getY());
+				goal = new Point((int)Math.round(this.getPosition().getX())-1, (int)Math.round(this.getPosition().getY()));
 				break;
 			default:
-				goal = null;
+				goal = this.getPosition();
 				break;
 			}
-			
+
 			//Allows to move to his current position to his attach part
-			this.strat = new MoveStrategyStraightLine(this.getPosition(), goal);
 			snakeDriver = new GameMovableDriverDefaultImpl();
-			snakeDriver.setStrategy(this.strat);
+			snakeDriver.setStrategy(new MoveStrategyStraightLine(this.getPosition(), goal));
 			this.setDriver(snakeDriver);
 		}
 	}

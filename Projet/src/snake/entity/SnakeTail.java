@@ -10,7 +10,6 @@ import gameframework.game.GameMovableDriverDefaultImpl;
 public class SnakeTail extends Snake{
 
 	protected Snake partAttach;
-	MoveStrategyStraightLine strat;
 	GameMovableDriverDefaultImpl snakeDriver;
 
 	public SnakeTail(Canvas defaultCanvas, Snake partAttach) {
@@ -44,10 +43,10 @@ public class SnakeTail extends Snake{
 			break;
 		default:
 			spriteType += "left";
-			tmpMove = "left";
+			tmpMove = "";
 			movable = false;
 		}
-		
+
 		lastMove = currentMove;
 		currentMove = tmpMove;
 		spriteManager.setType(spriteType);
@@ -60,28 +59,27 @@ public class SnakeTail extends Snake{
 		if(this.partAttach.movable){
 			Point goal = null;
 			//Watch where his attach part is going
-			switch (this.partAttach.getLastMove()){
+			switch (this.partAttach.getCurrentMove()){
 			case "top":
-				goal = new Point((int)this.getPosition().getX(), (int)this.getPosition().getY()-1);
+				goal = new Point((int)Math.round(this.getPosition().getX()), (int)Math.round(this.getPosition().getY())-1);
 				break;
 			case "down":
-				goal = new Point((int)this.getPosition().getX(), (int)this.getPosition().getY()+1);
+				goal = new Point((int)Math.round(this.getPosition().getX()), (int)Math.round(this.getPosition().getY())+1);
 				break;
 			case "right":
-				goal = new Point((int)this.getPosition().getX()+1, (int)this.getPosition().getY());
+				goal = new Point((int)Math.round(this.getPosition().getX())+1, (int)Math.round(this.getPosition().getY()));
 				break;
 			case "left":
-				goal = new Point((int)this.getPosition().getX()-1, (int)this.getPosition().getY());
+				goal = new Point((int)Math.round(this.getPosition().getX())-1, (int)Math.round(this.getPosition().getY()));
 				break;
 			default:
-				goal = null;
+				goal = this.getPosition();
 				break;
 			}
 
 			//Allows to move to his current position to his attach part
-			this.strat = new MoveStrategyStraightLine(this.getPosition(), goal);
 			snakeDriver = new GameMovableDriverDefaultImpl();
-			snakeDriver.setStrategy(this.strat);
+			snakeDriver.setStrategy(new MoveStrategyStraightLine(this.getPosition(), goal));
 			this.setDriver(snakeDriver);
 		}
 	}

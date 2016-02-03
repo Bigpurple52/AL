@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import gameframework.base.MoveStrategyKeyboard;
+import gameframework.base.MoveStrategyStraightLine;
 import gameframework.game.CanvasDefaultImpl;
 import gameframework.game.Game;
 import gameframework.game.GameMovableDriverDefaultImpl;
@@ -27,7 +28,7 @@ import snake.rule.SnakeOverlapRules;
 public class Level extends GameLevelDefaultImplSnake{
 
 	Canvas canvas;
-	
+
 	ArrayList<Snake> snakeall;
 
 	static int [][] tab;
@@ -64,22 +65,22 @@ public class Level extends GameLevelDefaultImplSnake{
 				if(i == 0 ){
 					universe.addGameEntity(new TeleportPairOfPoints(new Point(i * SPRITE_SIZE, j * SPRITE_SIZE), new Point(
 							26 * SPRITE_SIZE, j * SPRITE_SIZE)));					
-				// Right side to left side
+					// Right side to left side
 				}else if (i == 27){
 					universe.addGameEntity(new TeleportPairOfPoints(new Point(i * SPRITE_SIZE, j * SPRITE_SIZE), new Point(
-						1 * SPRITE_SIZE, j * SPRITE_SIZE)));
-				// Top side to bottom side
+							1 * SPRITE_SIZE, j * SPRITE_SIZE)));
+					// Top side to bottom side
 				}else if(j == 0){
 					universe.addGameEntity(new TeleportPairOfPoints(new Point(i * SPRITE_SIZE, j * SPRITE_SIZE), new Point(
 							i * SPRITE_SIZE, 29 * SPRITE_SIZE)));
-				// Bottom side to top side
+					// Bottom side to top side
 				}else if(j == 30){
 					universe.addGameEntity(new TeleportPairOfPoints(new Point(i * SPRITE_SIZE, j * SPRITE_SIZE), new Point(
 							i * SPRITE_SIZE, 1 * SPRITE_SIZE)));
 				}
 			}
 		}
-		
+
 		// Snake definition and inclusion in the universe
 		Snake snakeH = new SnakeHead(canvas);
 		snakeall.add(snakeH);
@@ -87,20 +88,28 @@ public class Level extends GameLevelDefaultImplSnake{
 		snakeall.add(snakeB);
 		Snake snakeT = new SnakeTail(canvas, snakeB);
 		snakeall.add(snakeT);
+
 		GameMovableDriverDefaultImpl snakeDriver = new GameMovableDriverDefaultImpl();
 		MoveStrategyKeyboard keyStr = new MoveStrategyKeyboard();
 		snakeDriver.setStrategy(keyStr);
 		canvas.addKeyListener(keyStr);
+
 		snakeH.setDriver(snakeDriver);
 		snakeH.setPosition(new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE));
 		universe.addGameEntity(snakeH);
-		snakeB.setDriver(snakeDriver);
+
 		snakeB.setPosition(new Point(15 * SPRITE_SIZE, 17 * SPRITE_SIZE));
 		universe.addGameEntity(snakeB);
-		snakeT.setDriver(snakeDriver);
-		snakeT.setPosition(new Point(16 * SPRITE_SIZE, 17 * SPRITE_SIZE));
-		universe.addGameEntity(snakeT);
+		GameMovableDriverDefaultImpl snakeDriverB = new GameMovableDriverDefaultImpl();
+		snakeDriverB.setStrategy(new MoveStrategyStraightLine(snakeB.getPosition(), snakeH.getPosition()));
+		snakeB.setDriver(snakeDriverB);
 		
+		snakeT.setPosition(new Point(16 * SPRITE_SIZE, 17 * SPRITE_SIZE));
+		universe.addGameEntity(snakeT);	
+		GameMovableDriverDefaultImpl snakeDriverT = new GameMovableDriverDefaultImpl();
+		snakeDriverT.setStrategy(new MoveStrategyStraightLine(snakeT.getPosition(), snakeB.getPosition()));
+		snakeT.setDriver(snakeDriverT);
+
 		// Perform a up key press to move the snake automatically at the beginning
 		try {
 			Robot robot = new Robot();
@@ -111,10 +120,10 @@ public class Level extends GameLevelDefaultImplSnake{
 		}
 	}
 }
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
